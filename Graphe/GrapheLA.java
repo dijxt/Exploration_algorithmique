@@ -2,12 +2,18 @@ package Graphe;
 
 import java.util.ArrayList;
 
-public class GrapheLA {
+/**
+ * classe de représentation d'une matrice par list d'adjacence
+ * @author ABBASSI Ilyes
+ */
+public class GrapheLA {	
+	/**nombre de noeuds du graphe*/
     private final int nbNoeuds;
+    /**listes d'adjacence représentant le graphe*/
     private ArrayList<ArrayList<Integer>> liste;
 
     /**
-     *
+     * constructeur de la classe
      * @param nbNoeuds le nombre de sommets du graphe
      */
     public GrapheLA(int nbNoeuds) {
@@ -19,7 +25,6 @@ public class GrapheLA {
     }
 
     /**
-     *
      * @return le nombre de sommets du graphe
      */
     public int getNbNoeuds() {
@@ -27,18 +32,18 @@ public class GrapheLA {
     }
 
     /**
-     *
-     * @param x le sommet de sortie
-     * @param y le sommet d'entrée
+     * ajoute un arc à la liste d'adjacence du sommet x
+     * @param x le premier sommet
+     * @param y le second sommet
      */
     public void ajouterArc(int x, int y) {
         liste.get(x - 1).add(y);
     }
 
     /**
-     *
-     * @param x le sommet de sortie
-     * @param y le sommet d'entrée
+     * test si l'arc (x, y) est présent dans une liste d'adjacence
+     * @param x le premier sommet
+     * @param y le second sommet
      * @return vrai si l'arc existe sinon faux
      */
     public boolean aArc(int x, int y) {
@@ -46,8 +51,8 @@ public class GrapheLA {
     }
 
     /**
-     *
-     * @param x le sommet de sortie
+     * renvoie le degré sortant d'un sommet
+     * @param x le sommet
      * @return le nombre de successeurs
      */
     public int dOut(int x) {
@@ -55,8 +60,8 @@ public class GrapheLA {
     }
 
     /**
-     *
-     * @param y le sommet d'entrée
+     * retourne le degré entrant d'un sommet
+     * @param y le sommet
      * @return le nombre de prédécesseurs
      */
     public int dIn(int y) {
@@ -72,8 +77,8 @@ public class GrapheLA {
     }
 
     /**
-     *
-     * @return une chaine de caractères sous forme de listes d'adjacences
+     * surcharge de l'opérateur d'affichage par défaut d'une instance de la classe
+     * @return une chaine de caractères représentant les listes d'adjacences
      */
     @Override
     public String toString() {
