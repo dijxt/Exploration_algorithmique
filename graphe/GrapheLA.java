@@ -1,10 +1,10 @@
-package Graphe;
+package graphe;
 
 import java.util.ArrayList;
 
 /**
  * classe de représentation d'une matrice par list d'adjacence
- * @author ABBASSI Ilyes
+ * @author ABBASSI Ilyes, TALHAOUI Ali, KRISHNAPAKARAN Sathusan
  */
 public class GrapheLA {	
 	/**nombre de noeuds du graphe*/

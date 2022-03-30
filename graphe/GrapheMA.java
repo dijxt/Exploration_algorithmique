@@ -1,8 +1,8 @@
-package Graphe;
+package graphe;
 
 /**
  * classe de représentation d'un graphe par une matrice d'adjacence
- * @author ABBASSI Ilyes
+ * @author ABBASSI Ilyes, TALHAOUI Ali, KRISHNAPAKARAN Sathusan
  */
 public class GrapheMA {
 	/**nombre de noeuds du graphe*/

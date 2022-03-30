@@ -1,8 +1,8 @@
-package GrapheTest;
+package grapheTest;
 
 import static org.junit.Assert.* ;
 import org.junit.Test ;
-import Graphe.GrapheLA;
+import graphe.GrapheLA;
 
 public class GrapheLATest {
     private final static int NB_NOEUDS = 6;
