@@ -1,13 +1,15 @@
 package graphe;
 
+import pCC.IGraph;
+
 import java.util.ArrayList;
 
 /**
  * classe de représentation d'une matrice par list d'adjacence
  * @author ABBASSI Ilyes, TALHAOUI Ali, KRISHNAPAKARAN Sathusan
  */
-public class GrapheLA {	
-	/**nombre de noeuds du graphe*/
+public class GrapheLA implements IGraph {
+    /**nombre de noeuds du graphe*/
     private final int nbNoeuds;
     /**listes d'adjacence représentant le graphe*/
     private ArrayList<ArrayList<Integer>> liste;
@@ -35,8 +37,9 @@ public class GrapheLA {
      * ajoute un arc à la liste d'adjacence du sommet x
      * @param x le premier sommet
      * @param y le second sommet
+     * @param val
      */
-    public void ajouterArc(int x, int y) {
+    public void ajouterArc(int x, int y, int val) {
         liste.get(x - 1).add(y);
     }
 
@@ -91,5 +94,15 @@ public class GrapheLA {
             str += "\n";
         }
         return str;
+    }
+
+    /**
+     * indique si le graphe peut être soumis à l'algorithme de Dijkstra
+     * @param g
+     * @return vrai ou faux
+     */
+    @Override
+    public boolean estOK(IGraph g) {
+        return false; // TODO la méthode
     }
 }

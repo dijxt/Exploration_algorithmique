@@ -1,11 +1,13 @@
 package graphe;
 
+import pCC.IGraph;
+
 /**
  * classe de représentation d'un graphe par une matrice d'adjacence
  * @author ABBASSI Ilyes, TALHAOUI Ali, KRISHNAPAKARAN Sathusan
  */
-public class GrapheMA {
-	/**nombre de noeuds du graphe*/
+public class GrapheMA implements IGraph {
+    /**nombre de noeuds du graphe*/
     private final int nbNoeuds;
     /**matrice d'adjacence représentant le graphe*/
     private boolean[][] matrice;
@@ -35,8 +37,9 @@ public class GrapheMA {
      * ajoute une arc à la matrice d'adjacence
      * @param x le premier sommet
      * @param y le second sommet
+     * @param val
      */
-    public void ajouterArc(int x, int y){
+    public void ajouterArc(int x, int y, int val){ // TODO la méthode avec une valuation d'arc
         matrice[x - 1][y - 1] = true;
     }
 
@@ -67,7 +70,7 @@ public class GrapheMA {
 
     /**
      * retourne le degré entrant du sommet y
-     * @param y le sommet 
+     * @param y le sommet
      * @return le nombre de prédécesseurs
      */
     public int dIn(int y){
@@ -99,5 +102,15 @@ public class GrapheMA {
             str += "\n";
         }
         return str;
+    }
+
+    /**
+     * indique si le graphe peut être soumis à l'algorithme de Dijkstra
+     * @param g
+     * @return vrai ou faux
+     */
+    @Override
+    public boolean estOK(IGraph g) {
+        return false; // TODO la méthode
     }
 }
