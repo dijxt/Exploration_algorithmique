@@ -1,4 +1,4 @@
-package graphe;
+package graphes;
 
 public class ArcNEégatifEx extends IllegalArgumentException{
     public ArcNEégatifEx(){
