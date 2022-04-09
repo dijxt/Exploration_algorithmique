@@ -1,8 +1,6 @@
 package tests.PCC;
 
-import graphes.GrapheLA;
-import graphes.GrapheMA;
-import org.junit.Test ;
+import static org.junit.Assert.*;
 
 public class PCCDijkstraTest {
 
