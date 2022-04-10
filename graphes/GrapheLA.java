@@ -76,6 +76,7 @@ public class GrapheLA implements IGraph {
      * @param label le noeud.
      * @return true si le noeud est valide, false sinon.
      */
+    @Override
     public boolean estNoeudOK(String label) {
         return noeuds.containsKey(label);
     }
@@ -86,6 +87,7 @@ public class GrapheLA implements IGraph {
      * @param n2 le noeud de destination de l'arc.
      * @return true si l'arc est valide, false sinon.
      */
+    @Override
     public boolean estArcOK(String n1, String n2) {
         return estNoeudOK(n1) && estNoeudOK(n2);
     }
@@ -172,6 +174,41 @@ public class GrapheLA implements IGraph {
             if (a.cible.equals(n2))
                 return a.valeur;
         throw new RuntimeException("Pas de valeur trouvée pour l'arc " + label1 +" -> " +n2);
+    }
+
+    /**
+     * La liste des successeurs d'un sommet
+     * @param label le sommet
+     * @return la liste des successeurs
+     */
+    @Override
+    public String[] getSuccesseurs(String label) {
+        assert estNoeudOK(label);
+        String[] str = new String[dOut(label)];
+        int i = 0;
+        for (Arc a : la.get(noeuds.get(label))){
+            str[i++] = a.cible;
+        }
+
+        return str; // TODO
+    }
+
+    /**
+     * La liste des prédécesseurs d'un sommet
+     * @param label le sommet
+     * @return la liste des prédécesseurs
+     */
+    @Override
+    public String[] getPredecesseurs(String label) {
+        assert estNoeudOK(label);
+        String[] str = new String[dIn(label)];
+        int i = 0;
+        for (int j = 0; j< la.size(); ++j)
+            for (Arc a : la.get(j))
+                if (a.cible.equals(label)){
+                    str[i++] = a.cible;
+                }
+        return str; // TODO
     }
 
 }

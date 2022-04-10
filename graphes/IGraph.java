@@ -8,6 +8,21 @@ public interface IGraph{
     int getNbNoeuds();
 
     /**
+     * Teste si un noeud est valide
+     * @param label le noeud
+     * @return true si le noeud est valide, false sinon
+     */
+    boolean estNoeudOK(String label);
+
+    /**
+     * Teste si un arc est valide
+     * @param n1 le sommet de départ
+     * @param n2 le sommet d'arrivée
+     * @return true si l'arc est valide, false sinon
+     */
+    boolean estArcOK(String n1, String n2);
+
+    /**
      * Ajoute un arc entre deux sommets
      * @param label1 le sommet de départ
      * @param label2 le sommet d'arrivée
@@ -44,4 +59,18 @@ public interface IGraph{
      * @return la valeur de l'arc
      */
     int getValeur(String label1, String label2);
+
+    /**
+     * La liste des successeurs d'un sommet
+     * @param label le sommet
+     * @return la liste des successeurs
+     */
+    String[] getSuccesseurs(String label);
+
+    /**
+     * La liste des prédécesseurs d'un sommet
+     * @param label le sommet
+     * @return la liste des prédécesseurs
+     */
+    String[] getPredecesseurs(String label);
 }

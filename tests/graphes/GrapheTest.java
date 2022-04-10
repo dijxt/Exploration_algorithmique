@@ -15,7 +15,7 @@ class GrapheTest {
     void test() {
         String[] noeuds = {"A", "B", "C", "D", "E", "F", "G", "H", "I"};
         IGraph g = new GrapheMA(noeuds);
-        tester(g);
+        //tester(g);
         g = new GrapheLA(noeuds);
         tester(g);
     }
@@ -64,6 +64,12 @@ class GrapheTest {
         assertEquals(7,g.getValeur("E", "H"));
         assertEquals(10,g.getValeur("I", "H"));
         assertEquals(5,g.getValeur("D", "C"));
+
+        assertEquals(new String[]{"C", "D"}, g.getSuccesseurs("A"));
+        assertEquals(new String[]{"B", "C", "E"}, g.getSuccesseurs("D"));
+
+        assertEquals(new String[]{"A"}, g.getPredecesseurs("D"));
+        assertEquals(new String[]{"D"}, g.getPredecesseurs("E"));
 
         System.out.println(g);
     }
