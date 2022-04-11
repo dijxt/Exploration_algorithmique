@@ -189,26 +189,16 @@ public class GrapheLA implements IGraph {
         for (Arc a : la.get(noeuds.get(label))){
             str[i++] = a.cible;
         }
-
-        return str; // TODO
+        return str;
     }
 
     /**
-     * La liste des prédécesseurs d'un sommet
-     * @param label le sommet
-     * @return la liste des prédécesseurs
+     * La liste de tout les sommets d'un graphe
+     * @return la liste
      */
     @Override
-    public String[] getPredecesseurs(String label) {
-        assert estNoeudOK(label);
-        String[] str = new String[dIn(label)];
-        int i = 0;
-        for (int j = 0; j< la.size(); ++j)
-            for (Arc a : la.get(j))
-                if (a.cible.equals(label)){
-                    str[i++] = a.cible;
-                }
-        return str; // TODO
+    public String[] getLabels() {
+        return noeuds.keySet().toArray(new String[this.getNbNoeuds()]);
     }
 
 }

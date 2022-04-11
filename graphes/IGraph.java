@@ -68,9 +68,8 @@ public interface IGraph{
     String[] getSuccesseurs(String label);
 
     /**
-     * La liste des prédécesseurs d'un sommet
-     * @param label le sommet
-     * @return la liste des prédécesseurs
+     * La liste de tout les sommets d'un graphe
+     * @return la liste
      */
-    String[] getPredecesseurs(String label);
+    String[] getLabels();
 }

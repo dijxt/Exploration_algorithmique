@@ -107,40 +107,6 @@ public class GrapheMA implements IGraph {
     }
 
     /**
-     * La liste des successeurs d'un sommet
-     * @param label le sommet
-     * @return la liste des successeurs
-     */
-    @Override
-    public String[] getSuccesseurs(String label) {
-        assert estNoeudOK(label);
-        int n = noeuds.get(label);
-        String[] str = new String[dOut(label)];
-        int nb = 0;
-        for (int i=0; i< getNbNoeuds(); ++i)
-            if (mab[n][i])
-                str[nb++] = labels[i];
-        return str; // TODO
-    }
-
-    /**
-     * La liste des prédécesseurs d'un sommet
-     * @param label le sommet
-     * @return la liste des prédécesseurs
-     */
-    @Override
-    public String[] getPredecesseurs(String label) {
-        assert estNoeudOK(label);
-        int n = noeuds.get(label);
-        String[] str = new String[dIn(label)];
-        int nb = 0;
-        for (int i=0; i< getNbNoeuds(); ++i)
-            if (mab[i][n])
-                str[nb++] = labels[i];
-        return str; // TODO
-    }
-
-    /**
      * Renvoie le nombre d'arcs sortants d'un noeud.
      * @param label le noeud
      * @return le nombre d'arcs sortants
@@ -170,4 +136,29 @@ public class GrapheMA implements IGraph {
         return degre;
     }
 
+    /**
+     * La liste des successeurs d'un sommet
+     * @param label le sommet
+     * @return la liste des successeurs
+     */
+    @Override
+    public String[] getSuccesseurs(String label) {
+        assert estNoeudOK(label);
+        int n = noeuds.get(label);
+        String[] str = new String[dOut(label)];
+        int nb = 0;
+        for (int i=0; i< getNbNoeuds(); ++i)
+            if (mab[n][i])
+                str[nb++] = this.labels[i];
+        return str;
+    }
+
+    /**
+     * La liste de tout les sommets d'un graphe
+     * @return la liste
+     */
+    @Override
+    public String[] getLabels() {
+        return labels;
+    }
 }
