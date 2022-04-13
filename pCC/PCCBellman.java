@@ -1,21 +1,19 @@
 package pCC;
 
-import graphes.IGraph;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 
 public class PCCBellman {
 
-    private static boolean triTopologiqueEffectuable (IGraph g){
+    /*private static boolean triTopologiqueEffectuable (IGraph g){
         ArrayList<String> labels = new ArrayList<>();
         for (String label : g.getLabels()){
             if (g.dIn(label) == 0){
                 for (String successeur : )
             }
         }
-    }
+    }*/
 
     private static void triTopologique(IGraph g){
         int n = g.getNbNoeuds();

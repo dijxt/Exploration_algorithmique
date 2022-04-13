@@ -1,13 +1,16 @@
 package graphes;
 
+import pCC.IGraph;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
  * GrapheMA est une classe qui implémente le graphe de type liste d'adjacence.
  */
-public class GrapheLA implements IGraph {
+public class GrapheLA implements IGraph, Iterable<String> {
     private Map<String, Integer> noeuds;
     private ArrayList<ArrayList<Arc>> la;
 
@@ -199,6 +202,15 @@ public class GrapheLA implements IGraph {
     @Override
     public String[] getLabels() {
         return noeuds.keySet().toArray(new String[this.getNbNoeuds()]);
+    }
+
+    /**
+     * Returns an iterator over elements of type {@code T}.
+     * @return an Iterator.
+     */
+    @Override
+    public Iterator<String> iterator() {
+        return noeuds.keySet().iterator();
     }
 
 }

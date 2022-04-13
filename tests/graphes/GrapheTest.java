@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import graphes.GrapheLA;
 import graphes.GrapheMA;
-import graphes.IGraph;
+import pCC.IGraph;
 
 import java.util.Arrays;
 
@@ -67,16 +67,10 @@ class GrapheTest {
         assertEquals(10,g.getValeur("I", "H"));
         assertEquals(5,g.getValeur("D", "C"));
 
-        //assertEquals(new String[]{"C", "D"}, g.getSuccesseurs("A"));
-        //assertEquals(new String[]{"B", "C", "E"}, g.getSuccesseurs("D"));
-        System.out.println(Arrays.toString(g.getSuccesseurs("A")));
-        System.out.println(Arrays.toString(g.getSuccesseurs("D")));
-        //assertEquals(new String[]{"A"}, g.getPredecesseurs("D"));
-        //assertEquals(new String[]{"D"}, g.getPredecesseurs("E"));
-        System.out.println(Arrays.toString(g.getPredecesseurs("D")));
-        System.out.println(Arrays.toString(g.getPredecesseurs("E")));
+        assertTrue(Arrays.equals(g.getSuccesseurs("A"), new String[]{"C", "D"}));
+        assertTrue(Arrays.equals(g.getSuccesseurs("D"), new String[]{"B", "C", "E"}));
 
-        //System.out.println(g);
+        System.out.println(g);
     }
 
 

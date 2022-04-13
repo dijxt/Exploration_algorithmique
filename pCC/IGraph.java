@@ -1,4 +1,6 @@
-package graphes;
+package pCC;
+
+import java.util.Iterator;
 
 public interface IGraph{
     /**

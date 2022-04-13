@@ -1,12 +1,15 @@
 package graphes;
 
+import pCC.IGraph;
+
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
  * GrapheMA est une classe qui implémente le graphe de type matrice d'adjacence.
  */
-public class GrapheMA implements IGraph {
+public class GrapheMA implements IGraph, Iterable<String> {
     private Map<String, Integer> noeuds;
     private String[] labels; // pour toString
     private boolean[][] mab;
@@ -160,5 +163,14 @@ public class GrapheMA implements IGraph {
     @Override
     public String[] getLabels() {
         return labels;
+    }
+
+    /**
+     * Returns an iterator over elements of type {@code T}.
+     * @return an Iterator.
+     */
+    @Override
+    public Iterator<String> iterator() {
+        return noeuds.keySet().iterator();
     }
 }
