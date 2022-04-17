@@ -2,10 +2,11 @@ package tests.graphes;
 
 import graphes.GrapheLA;
 import graphes.GrapheMA;
-import org.junit.Test;
-import pCC.IGraph;
 
+import org.junit.Test;
 import static org.junit.Assert.*;
+
+import pCC.IGraph;
 
 public class GrapheTest {
     // Graphe de l'exercice 3.1 du poly de maths

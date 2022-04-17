@@ -1,10 +1,10 @@
 package graphes;
 
-public class ArcNEégatifEx extends IllegalArgumentException{
+public class ArcNégatifEx extends IllegalArgumentException{
     /**
      * Constructeur de la classe ArcNEégatifEx.
      */
-    public ArcNEégatifEx(){
+    public ArcNégatifEx(){
         super("Le graphe possède un arc négatif");
     }
 }

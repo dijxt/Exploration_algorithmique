@@ -1,8 +1,9 @@
 package tests.pCCTest;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import static org.junit.Assert.*;
+
+import graphes.ArcNégatifEx;
+import org.junit.Test;
 
 import graphes.GrapheLA;
 import graphes.GrapheMA;
@@ -12,12 +13,18 @@ import pCC.PCCDijkstra;
 
 public class PCCTest {
     @Test
-    void test() {
+    public void test() {
         String[] noeuds = {"A", "B", "C", "D", "E", "F", "G", "H", "I"};
         IGraph g = new GrapheMA(noeuds);
+        if (!PCCDijkstra.estOkGraphe(g)){
+            throw new ArcNégatifEx();
+        }
         tester(g);
         testerPCC(g);
         g = new GrapheLA(noeuds);
+        if (!PCCDijkstra.estOkGraphe(g)){
+            throw new ArcNégatifEx();
+        }
         tester(g);
         testerPCC(g);
     }
@@ -43,25 +50,18 @@ public class PCCTest {
 
     void testerPCC(IGraph g){
 
-        PCCDijkstra p1 = new  PCCDijkstra(g, "A", "H");
-        Assertions.assertEquals(p1.PCC(), new String[]{"A", "C", "H"});
+        assertArrayEquals(new  PCCDijkstra(g, "A", "H").PCC(), new String[]{"A", "C", "H"});
 
-        PCCDijkstra p2 = new  PCCDijkstra(g, "A", "G");
-        Assertions.assertEquals(p2.PCC(), new String[]{"A", "C", "H", "G"});
+        assertArrayEquals(new  PCCDijkstra(g, "A", "G").PCC(), new String[]{"A", "C", "H", "G"});
 
-        PCCDijkstra p3 = new  PCCDijkstra(g, "A", "F");
-        Assertions.assertEquals(p3.PCC(), new String[]{"A", "C", "H", "G", "F"});
+        assertArrayEquals(new  PCCDijkstra(g, "A", "F").PCC(), new String[]{"A", "C", "H", "G", "F"});
 
-        PCCDijkstra p4 = new  PCCDijkstra(g, "A", "E");
-        Assertions.assertEquals(p4.PCC(), new String[]{"A", "D", "E"});
+        assertArrayEquals(new  PCCDijkstra(g, "A", "E").PCC(), new String[]{"A", "D", "E"});
 
-        PCCDijkstra p5 = new  PCCDijkstra(g, "A", "D");
-        Assertions.assertEquals(p5.PCC(), new String[]{"A", "D"});
+        assertArrayEquals(new  PCCDijkstra(g, "A", "D").PCC(), new String[]{"A", "D"});
 
-        PCCDijkstra p6 = new  PCCDijkstra(g, "A", "C");
-        Assertions.assertEquals(p6.PCC(), new String[]{"A", "C"});
+        assertArrayEquals(new  PCCDijkstra(g, "A", "C").PCC(), new String[]{"A", "C"});
 
-        PCCDijkstra p7 = new  PCCDijkstra(g, "A", "B");
-        Assertions.assertEquals(p7.PCC(), new String[]{"A", "D", "B"});
+        assertArrayEquals(new  PCCDijkstra(g, "A", "B").PCC(), new String[]{"A", "D", "B"});
     }
 }

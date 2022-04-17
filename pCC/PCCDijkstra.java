@@ -1,7 +1,5 @@
 package pCC;
 
-import graphes.ArcNEégatifEx;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -20,7 +18,7 @@ public class PCCDijkstra {
      * @param g le graphe
      * @return true si le graphe est correct, false sinon
      */
-    private static boolean estOkGraphe(IGraph g){
+    public static boolean estOkGraphe(IGraph g){
         for (String s: g.getLabels()){
             for (String sc: g.getSuccesseurs(s)){
                 if (g.getValeur(s, sc) < 0){

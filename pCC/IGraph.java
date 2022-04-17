@@ -2,7 +2,7 @@ package pCC;
 
 import java.util.Iterator;
 
-public interface IGraph{
+public interface IGraph extends Iterable<String>{
     /**
      * Retourne le nombre de sommets du graphe
      * @return le nombre de sommets du graphe
@@ -70,7 +70,7 @@ public interface IGraph{
     String[] getSuccesseurs(String label);
 
     /**
-     * La liste de tout les sommets d'un graphe
+     * La liste de touts les sommets d'un graphe
      * @return la liste
      */
     String[] getLabels();
