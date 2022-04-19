@@ -64,10 +64,13 @@ public class PCCDijkstra {
      * @return le plus court chemin
      */
     public String[] PCC(){
-
+        ArrayList<String> chemin = new ArrayList<>();
+        chemin.add(source);
         while (!noeudsVisites.contains(cible)){
+            for (String s: g.getSuccesseurs(noeudsVisites.get(noeudsVisites.size()-1))){
 
+            }
         }
-        return new String[0];
+        return chemin.toArray(new String[0]);
     }
 }

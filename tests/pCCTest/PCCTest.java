@@ -9,24 +9,31 @@ import graphes.GrapheLA;
 import graphes.GrapheMA;
 
 import pCC.IGraph;
+import pCC.PCCBellman;
 import pCC.PCCDijkstra;
 
 public class PCCTest {
     @Test
     public void test() {
         String[] noeuds = {"A", "B", "C", "D", "E", "F", "G", "H", "I"};
-        IGraph g = new GrapheMA(noeuds);
-        if (!PCCDijkstra.estOkGraphe(g)){
+
+        IGraph g = new GrapheMA(noeuds);  // instance d'un graphe
+        tester(g);  // ajout des arcs
+        if (!PCCDijkstra.estOkGraphe(g)){  // vérification des arcs du graphe
             throw new ArcNégatifEx();
         }
-        tester(g);
-        testerPCC(g);
+        else{
+            testerPCC(g);  // test de l'algorithme
+        }
+
         g = new GrapheLA(noeuds);
+        tester(g);
         if (!PCCDijkstra.estOkGraphe(g)){
             throw new ArcNégatifEx();
         }
-        tester(g);
-        testerPCC(g);
+        else{
+            testerPCC(g);
+        }
     }
 
     void tester(IGraph g) {
@@ -51,17 +58,19 @@ public class PCCTest {
     void testerPCC(IGraph g){
 
         assertArrayEquals(new  PCCDijkstra(g, "A", "H").PCC(), new String[]{"A", "C", "H"});
-
         assertArrayEquals(new  PCCDijkstra(g, "A", "G").PCC(), new String[]{"A", "C", "H", "G"});
-
         assertArrayEquals(new  PCCDijkstra(g, "A", "F").PCC(), new String[]{"A", "C", "H", "G", "F"});
-
         assertArrayEquals(new  PCCDijkstra(g, "A", "E").PCC(), new String[]{"A", "D", "E"});
-
         assertArrayEquals(new  PCCDijkstra(g, "A", "D").PCC(), new String[]{"A", "D"});
-
         assertArrayEquals(new  PCCDijkstra(g, "A", "C").PCC(), new String[]{"A", "C"});
-
         assertArrayEquals(new  PCCDijkstra(g, "A", "B").PCC(), new String[]{"A", "D", "B"});
+
+        /*assertArrayEquals(new PCCBellman(g, "A", "H").PCC(), new String[]{"A", "C", "H"});
+        assertArrayEquals(new  PCCBellman(g, "A", "G").PCC(), new String[]{"A", "C", "H", "G"});
+        assertArrayEquals(new  PCCBellman(g, "A", "F").PCC(), new String[]{"A", "C", "H", "G", "F"});
+        assertArrayEquals(new  PCCBellman(g, "A", "E").PCC(), new String[]{"A", "D", "E"});
+        assertArrayEquals(new  PCCBellman(g, "A", "D").PCC(), new String[]{"A", "D"});
+        assertArrayEquals(new  PCCBellman(g, "A", "C").PCC(), new String[]{"A", "C"});
+        assertArrayEquals(new  PCCBellman(g, "A", "B").PCC(), new String[]{"A", "D", "B"});*/
     }
 }

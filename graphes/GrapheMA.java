@@ -74,17 +74,17 @@ public class GrapheMA implements IGraph, Iterable<String> {
      */
     @Override
     public String toString() {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for(String label1 : noeuds.keySet()) {
-            s+= label1 + " -> ";
+            s.append(label1).append(" -> ");
             int n1 = noeuds.get(label1);
             for (int n2=0; n2< getNbNoeuds(); ++n2) {
                 if (mab[n1][n2])
-                    s+= labels[n2] + "("+ mav[n1][n2] + ") ";
+                    s.append(labels[n2]).append("(").append(mav[n1][n2]).append(") ");
             }
-            s+="\n";
+            s.append("\n");
         }
-        return s;
+        return s.toString();
     }
 
     /**

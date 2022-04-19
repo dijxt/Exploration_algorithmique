@@ -74,4 +74,17 @@ public interface IGraph extends Iterable<String>{
      * @return la liste
      */
     String[] getLabels();
+
+    /**
+     * Retourne une chaine de caractère représentant un graphe
+     * @return la chaine
+     */
+    String toString();
+
+    /**
+     * Iterator des sommets d'un graphe
+     * @return l'iterator
+     */
+    @Override
+    Iterator<String> iterator();
 }

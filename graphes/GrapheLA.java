@@ -127,14 +127,14 @@ public class GrapheLA implements IGraph, Iterable<String> {
      */
     @Override
     public String toString() {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for(String label1 : noeuds.keySet()) {
-            s+= label1 + " -> ";
+            s.append(label1).append(" -> ");
             for (Arc a : la.get(noeuds.get(label1)))
-                s+= a.cible + "("+ a.valeur + ") ";
-            s+="\n";
+                s.append(a.cible).append("(").append(a.valeur).append(") ");
+            s.append("\n");
         }
-        return s;
+        return s.toString();
     }
 
     /**
