@@ -213,4 +213,14 @@ public class GrapheLA implements IGraph, Iterable<String> {
         return noeuds.keySet().iterator();
     }
 
+    /**
+     * Renvoie le numéro d'un noeud
+     * @param label le noeud
+     * @return son numéro
+     */
+    @Override
+    public int getNumero(String label) {
+        return noeuds.get(label);
+    }
+
 }

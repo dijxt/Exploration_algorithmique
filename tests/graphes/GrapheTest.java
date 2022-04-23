@@ -67,6 +67,7 @@ public class GrapheTest {
         assertArrayEquals(g.getSuccesseurs("A"), new String[]{"C", "D"});
         assertArrayEquals(g.getSuccesseurs("D"), new String[]{"B", "C", "E"});
 
-        System.out.println(g);
+        assertEquals(g.getNumero("A"), 0);
+
     }
 }

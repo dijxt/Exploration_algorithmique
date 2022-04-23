@@ -87,4 +87,11 @@ public interface IGraph extends Iterable<String>{
      */
     @Override
     Iterator<String> iterator();
+
+    /**
+     * Renvoie le numéro d'un noeud
+     * @param label le noeud
+     * @return son numéro
+     */
+    int getNumero(String label);
 }

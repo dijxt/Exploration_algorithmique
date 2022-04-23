@@ -1,16 +1,17 @@
 package pCC;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import graphes.ArcNégatifEx;
+
+import java.util.*;
 
 public class PCCDijkstra {
 
-    private final IGraph g;
-    private final String source;
-    private final String cible;
-    private ArrayList<String> noeudsVisites;
-    private int[] distanceSommets;
-    private String[] dernierPredecesseur;
+    private final IGraph g;  // le graphe
+    private final String source;  // le sommet source
+    private final String cible;  // le sommet cible
+    private ArrayList<String> noeudsVisites;  // les noeuds deja parcourus par l'algorithme
+    private int[] distanceSommets;  // la distance totale de chaque sommet de la source
+    private String[] dernierPredecesseur;  // le prédécesseur le plus court de chaque sommet
 
 
     /**
@@ -37,13 +38,16 @@ public class PCCDijkstra {
      */
     public PCCDijkstra(IGraph g, String source, String cible){
         assert estOkGraphe(g);
+        if (!estOkGraphe(g)) {
+            throw new ArcNégatifEx();
+        }
         this.g = g;
         this.source = source;
         this.cible = cible;
         this.noeudsVisites = new ArrayList<>();
         this.distanceSommets = new int[g.getNbNoeuds()];
         this.dernierPredecesseur = new String[g.getNbNoeuds()];
-
+        // initialisation du noeud source
         noeudsVisites.add(source);
         distanceSommets[0] = 0;
         dernierPredecesseur[0] = null;
@@ -65,12 +69,37 @@ public class PCCDijkstra {
      */
     public String[] PCC(){
         ArrayList<String> chemin = new ArrayList<>();
-        chemin.add(source);
+        chemin.add(cible);
         while (!noeudsVisites.contains(cible)){
-            for (String s: g.getSuccesseurs(noeudsVisites.get(noeudsVisites.size()-1))){
-
+            String dernierNoeud = noeudsVisites.get(noeudsVisites.size()-1);
+            for (String s: g.getSuccesseurs(dernierNoeud)){
+                if(g.getValeur(dernierNoeud, s) + distanceSommets[g.getNumero(dernierNoeud)] < distanceSommets[g.getNumero(s)]){
+                    distanceSommets[g.getNumero(s)] = g.getValeur(dernierNoeud, s) + distanceSommets[g.getNumero(dernierNoeud)];
+                    dernierPredecesseur[g.getNumero(s)] = dernierNoeud;
+                }
             }
+            String prochainNoeud = null;
+            int cpt = 0;
+            for (String s: g.getSuccesseurs(dernierNoeud)){
+                if (cpt == 0){
+                    prochainNoeud = s;
+                    ++cpt;
+                }
+                else {
+                    if (distanceSommets[g.getNumero(s)] < distanceSommets[g.getNumero(prochainNoeud)]){
+                        prochainNoeud = s;
+                    }
+                }
+            }
+            noeudsVisites.add(prochainNoeud);
         }
+        String noeudChemin = cible;
+        while (!Objects.equals(noeudChemin, source)){
+            chemin.add(dernierPredecesseur[g.getNumero(noeudChemin)]);
+            noeudChemin = dernierPredecesseur[g.getNumero(noeudChemin)];
+        }
+        Collections.reverse(chemin);
+        System.out.println(chemin);
         return chemin.toArray(new String[0]);
     }
 }
