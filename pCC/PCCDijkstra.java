@@ -79,16 +79,11 @@ public class PCCDijkstra {
                 }
             }
             String prochainNoeud = null;
-            int cpt = 0;
-            for (String s: g.getSuccesseurs(dernierNoeud)){
-                if (cpt == 0){
-                    prochainNoeud = s;
-                    ++cpt;
-                }
-                else {
-                    if (distanceSommets[g.getNumero(s)] < distanceSommets[g.getNumero(prochainNoeud)]){
-                        prochainNoeud = s;
-                    }
+            int prochainSommet = Integer.MAX_VALUE;
+            for (int i = 0; i < distanceSommets.length; ++i){
+                if (distanceSommets[i] < prochainSommet && !noeudsVisites.contains(g.getLabels()[i])){
+                    prochainSommet = distanceSommets[i];
+                    prochainNoeud = g.getLabels()[i];
                 }
             }
             noeudsVisites.add(prochainNoeud);
@@ -100,6 +95,7 @@ public class PCCDijkstra {
         }
         Collections.reverse(chemin);
         System.out.println(chemin);
+        System.out.println(distanceSommets[g.getNumero(cible)]);
         return chemin.toArray(new String[0]);
     }
 }
