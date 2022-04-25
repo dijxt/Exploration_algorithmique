@@ -37,7 +37,6 @@ public class PCCDijkstra {
      * @param cible un sommet cible
      */
     public PCCDijkstra(IGraph g, String source, String cible){
-        assert estOkGraphe(g);
         if (!estOkGraphe(g)) {
             throw new ArcNégatifEx();
         }
@@ -79,10 +78,10 @@ public class PCCDijkstra {
                 }
             }
             String prochainNoeud = null;
-            int prochainSommet = Integer.MAX_VALUE;
+            int valeurArcProchainNoeud = Integer.MAX_VALUE;
             for (int i = 0; i < distanceSommets.length; ++i){
-                if (distanceSommets[i] < prochainSommet && !noeudsVisites.contains(g.getLabels()[i])){
-                    prochainSommet = distanceSommets[i];
+                if (distanceSommets[i] < valeurArcProchainNoeud && !noeudsVisites.contains(g.getLabels()[i])){
+                    valeurArcProchainNoeud = distanceSommets[i];
                     prochainNoeud = g.getLabels()[i];
                 }
             }
