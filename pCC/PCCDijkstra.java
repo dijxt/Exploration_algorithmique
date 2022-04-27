@@ -51,50 +51,82 @@ public class PCCDijkstra {
         distanceSommets[0] = 0;
         dernierPredecesseur[0] = null;
 
-        for(int i = 1; i < g.getNbNoeuds(); ++i) {
-            if (Arrays.asList(g.getSuccesseurs(source)).contains(g.getLabels()[i])) {
-                distanceSommets[i] = g.getValeur(source, g.getLabels()[i]);
-                dernierPredecesseur[i] = source;
-            } else {
-                distanceSommets[i] = Integer.MAX_VALUE;
-                dernierPredecesseur[i] = null;
-            }
-        }
+    for(int i = 1; i < g.getNbNoeuds(); ++i) {
+    if (Arrays.asList(g.getSuccesseurs(source)).contains(g.getLabels()[i])) {
+    distanceSommets[i] = g.getValeur(source, g.getLabels()[i]);
+    dernierPredecesseur[i] = source;
+    } else {
+    distanceSommets[i] = Integer.MAX_VALUE;
+    dernierPredecesseur[i] = null;
+    }
+    }
     }
 
     /**
      * Renvoie le plus court chemin entre deux sommets d'un graphe
+     *
      * @return le plus court chemin
      */
     public String[] PCC(){
         ArrayList<String> chemin = new ArrayList<>();
         chemin.add(cible);
-        while (!noeudsVisites.contains(cible)){
-            String dernierNoeud = noeudsVisites.get(noeudsVisites.size()-1);
-            for (String s: g.getSuccesseurs(dernierNoeud)){
-                if(g.getValeur(dernierNoeud, s) + distanceSommets[g.getNumero(dernierNoeud)] < distanceSommets[g.getNumero(s)]){
-                    distanceSommets[g.getNumero(s)] = g.getValeur(dernierNoeud, s) + distanceSommets[g.getNumero(dernierNoeud)];
-                    dernierPredecesseur[g.getNumero(s)] = dernierNoeud;
+
+        ArrayList<Integer> noeudsVisites = new ArrayList<>();
+        int[] distanceSommets = new int[g.getNbSommets()];
+        int[] dernierPredecesseur = new int[g.getNbSommets()];
+
+        for (int i = 1; i <= g.getNbSommets(); ++i) {
+            if (Arrays.asList(g.getSuccesseurs(source)).contains(i)) {
+                distanceSommets[i - 1] = g.getValuation(source, i);
+                dernierPredecesseur[i - 1] = source;
+            } else {
+                distanceSommets[i - 1] = INFINI;
+                dernierPredecesseur[i - 1] = (Integer) null;
+            }
+        }
+        while (!noeudsVisites.contains(cible)) {
+            int dernierNoeud = noeudsVisites.get(noeudsVisites.size() - 1);
+            for (int s : g.getSuccesseurs(dernierNoeud)) {
+                if (g.getValuation(dernierNoeud, s) + distanceSommets[dernierNoeud] < distanceSommets[s - 1]) {
+                    distanceSommets[s - 1] = g.getValuation(dernierNoeud, s) + distanceSommets[dernierNoeud - 1];
+                    dernierPredecesseur[s - 1] = dernierNoeud;
                 }
             }
-            String prochainNoeud = null;
-            int valeurArcProchainNoeud = Integer.MAX_VALUE;
-            for (int i = 0; i < distanceSommets.length; ++i){
-                if (distanceSommets[i] < valeurArcProchainNoeud && !noeudsVisites.contains(g.getLabels()[i])){
+            int prochainNoeud = (Integer) null;
+            int valeurArcProchainNoeud = INFINI;
+            for (int i = 0; i < distanceSommets.length; ++i) {
+                if (distanceSommets[i] < valeurArcProchainNoeud && !noeudsVisites.contains(i + 1)) {
                     valeurArcProchainNoeud = distanceSommets[i];
-                    prochainNoeud = g.getLabels()[i];
+                    prochainNoeud = i + 1;
                 }
             }
             noeudsVisites.add(prochainNoeud);
         }
-        String noeudChemin = cible;
-        while (!Objects.equals(noeudChemin, source)){
-            chemin.add(dernierPredecesseur[g.getNumero(noeudChemin)]);
-            noeudChemin = dernierPredecesseur[g.getNumero(noeudChemin)];
+        int noeudChemin = cible;
+        while (!(noeudChemin == source)) {
+            chemin.add(dernierPredecesseur[noeudChemin - 1]);
+            noeudChemin = dernierPredecesseur[noeudChemin - 1];
         }
         Collections.reverse(chemin);
         System.out.println(chemin);
-        System.out.println(distanceSommets[g.getNumero(cible)]);
-        return chemin.toArray(new String[0]);
+        System.out.println(distanceSommets[cible - 1]);
+        return chemin.stream().mapToInt(Integer::intValue).toArray();
+    }
+
+    /**
+     * Indique si un graphe peut être soumis à l'algorithme de dijkstra
+     *
+     * @param g le graphe
+     * @return true si le graphe est correct, false sinon
+     */
+    private static boolean estOkGraphe(IGraphe g) {
+        for (int s = 1; s <= g.getNbSommets(); ++s) {
+            for (int sc : g.getSuccesseurs(s)) {
+                if (g.getValuation(s, sc) < 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

@@ -1,5 +1,7 @@
 package pCC;
 
+import graphes.CircuitEx;
+
 import java.util.*;
 
 public class PCCBellman {
@@ -22,6 +24,25 @@ public class PCCBellman {
                         predecesseurs.put(label2, label1);
                     }
 
+        if (!rechercheCircuit(predecesseurs, source) || predecesseurs.size() != g.getNbSommets())
+            throw new CircuitEx();
+
         return distances.get(cible);
+    }
+
+    private static boolean rechercheCircuit(Map<Integer, Integer> predecesseurs, int source){
+        Map<Integer, Integer> rangs = new HashMap<>();
+        rangs.put(source, 0);
+        List<Integer> sommetsOut = new ArrayList<>();
+        sommetsOut.add(source);
+        for (int i = 1 ; i < predecesseurs.size() ; i++) {
+            for (int key : predecesseurs.keySet())
+                if (sommetsOut.contains(predecesseurs.get(key)))
+                    rangs.put(key, i);
+
+            if (rangs.keySet() == predecesseurs.keySet())
+                return true;
+        }
+        return false;
     }
 }
