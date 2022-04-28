@@ -1,73 +1,66 @@
 package tests.graphes;
 
-import graphes.GrapheLA;
-import graphes.GrapheMA;
+import graphes.types.GrapheLA;
+import graphes.types.GrapheMA;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import pCC.IGraph;
+import pCC.IGraphe;
 
 public class GrapheTest {
     // Graphe de l'exercice 3.1 du poly de maths
     @Test
     public void test() {
-        String[] noeuds = {"A", "B", "C", "D", "E", "F", "G", "H", "I"};
-        IGraph g = new GrapheMA(noeuds);
+        IGraphe g = new GrapheMA(9);
         tester(g);
-        g = new GrapheLA(noeuds);
+        g = new GrapheLA(9);
         tester(g);
     }
 
-    void tester(IGraph g) {
-        assertEquals(9, g.getNbNoeuds());
-        g.ajouterArc("A","C",2);
-        g.ajouterArc("A","D",1);
-        g.ajouterArc("B","G",3);
-        g.ajouterArc("C","H",2);
-        g.ajouterArc("D","B",3);
-        g.ajouterArc("D","C",5);
-        g.ajouterArc("D","E",3);
-        g.ajouterArc("E","C",1);
-        g.ajouterArc("E","G",3);
-        g.ajouterArc("E","H",7);
-        g.ajouterArc("G","B",2);
-        g.ajouterArc("G","F",1);
-        g.ajouterArc("H","F",4);
-        g.ajouterArc("H","G",2);
-        g.ajouterArc("I","H",10);
+    void tester(IGraphe g) {
+        assertEquals(9, g.getNbSommets());
 
-        assertTrue(g.aArc("A","D"));
-        assertTrue(g.aArc("B","G"));
-        assertTrue(g.aArc("E","G"));
-        assertTrue(g.aArc("E","H"));
-        assertTrue(g.aArc("H","F"));
+        g.ajouterArc(1,3,2);
+        g.ajouterArc(1,4,1);
+        g.ajouterArc(2,7,3);
+        g.ajouterArc(3,8,2);
+        g.ajouterArc(4,2,3);
+        g.ajouterArc(4,3,5);
+        g.ajouterArc(4,5,3);
+        g.ajouterArc(5,3,1);
+        g.ajouterArc(5,7,3);
+        g.ajouterArc(5,8,7);
+        g.ajouterArc(7,2,2);
+        g.ajouterArc(7,6,1);
+        g.ajouterArc(8,6,4);
+        g.ajouterArc(8,7,2);
+        g.ajouterArc(9,8,10);
 
-        assertFalse(g.aArc("D","A"));
-        assertFalse(g.aArc("H","C"));
-        assertFalse(g.aArc("I","I"));
+        assertArrayEquals(g.getSuccesseurs(1), new int[]{3,4});
+        assertArrayEquals(g.getSuccesseurs(2), new int[]{7});
+        assertArrayEquals(g.getSuccesseurs(3), new int[]{8});
+        assertArrayEquals(g.getSuccesseurs(4), new int[]{2,3,5});
+        assertArrayEquals(g.getSuccesseurs(5), new int[]{3,7,8});
+        assertArrayEquals(g.getSuccesseurs(6), new int[]{});
+        assertArrayEquals(g.getSuccesseurs(7), new int[]{2,6});
+        assertArrayEquals(g.getSuccesseurs(8), new int[]{6,7});
+        assertArrayEquals(g.getSuccesseurs(9), new int[]{8});
 
-        assertEquals(2,g.dOut("A"));
-        assertEquals(1,g.dOut("B"));
-        assertEquals(1,g.dOut("C"));
-        assertEquals(3,g.dOut("D"));
-        assertEquals(0,g.dOut("F"));
-        assertEquals(1,g.dOut("I"));
+        assertTrue(g.aArc(1,4));
+        assertTrue(g.aArc(2,7));
+        assertTrue(g.aArc(5,7));
+        assertTrue(g.aArc(5,8));
+        assertTrue(g.aArc(8,6));
 
-        assertEquals(0,g.dIn("A"));
-        assertEquals(2,g.dIn("B"));
-        assertEquals(2,g.dIn("F"));
-        assertEquals(0,g.dIn("I"));
+        assertFalse(g.aArc(4,1));
+        assertFalse(g.aArc(8,3));
+        assertFalse(g.aArc(9,9));
 
-        assertEquals(3,g.getValeur("D", "E"));
-        assertEquals(7,g.getValeur("E", "H"));
-        assertEquals(10,g.getValeur("I", "H"));
-        assertEquals(5,g.getValeur("D", "C"));
-
-        assertArrayEquals(g.getSuccesseurs("A"), new String[]{"C", "D"});
-        assertArrayEquals(g.getSuccesseurs("D"), new String[]{"B", "C", "E"});
-
-        assertEquals(g.getNumero("A"), 0);
+        assertEquals(3,g.getValuation(4, 5));
+        assertEquals(7,g.getValuation(5, 8));
+        assertEquals(10,g.getValuation(9, 8));
+        assertEquals(5,g.getValuation(4, 3));
 
     }
 }

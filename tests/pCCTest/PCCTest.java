@@ -5,138 +5,145 @@ import static org.junit.Assert.*;
 import graphes.ArcNégatifEx;
 import org.junit.Test;
 
-import graphes.GrapheLA;
-import graphes.GrapheMA;
+import graphes.types.GrapheLA;
+import graphes.types.GrapheMA;
 
-import pCC.IGraph;
+import pCC.IGraphe;
+import pCC.PCCBellman;
 import pCC.PCCDijkstra;
 
 public class PCCTest {
 
-    //@Test
+    @Test
     public void test() {
-        String[] noeuds3_1 = {"A", "B", "C", "D", "E", "F", "G", "H", "I"};
-        String[] noeuds3_2 = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
-        String[] noeuds3_6 = {"A", "B", "C", "D", "E", "F", "G"};
-
-        IGraph g = new GrapheMA(noeuds3_1);  // test de l'exercice 3.1
+        IGraphe g = new GrapheMA(9);  // test de l'exercice 3.1
         tester3_1(g);
-        g = new GrapheLA(noeuds3_1);
+        g = new GrapheLA(9);
         tester3_1(g);
 
-        g = new GrapheMA(noeuds3_2);  // test de l'exercice 3.2
+        g = new GrapheMA(10);  // test de l'exercice 3.2
         tester3_2(g);
-        g = new GrapheLA(noeuds3_2);
+        g = new GrapheLA(10);
         tester3_2(g);
 
-        g = new GrapheMA(noeuds3_6);  // test de l'exercice 3.6
+        g = new GrapheMA(7);  // test de l'exercice 3.6
         tester3_6(g);
-        g = new GrapheLA(noeuds3_6);
+        g = new GrapheLA(7);
         tester3_6(g);
     }
 
-    void tester3_1(IGraph g) {
-        assertEquals(9, g.getNbNoeuds());
+    void tester3_1(IGraphe g) {
+        assertEquals(9, g.getNbSommets());
 
-        g.ajouterArc("A", "C", 2);  // ajout des arcs
-        g.ajouterArc("A", "D", 1);
-        g.ajouterArc("B", "G", 3);
-        g.ajouterArc("C", "H", 2);
-        g.ajouterArc("D", "B", 3);
-        g.ajouterArc("D", "C", 5);
-        g.ajouterArc("D", "E", 3);
-        g.ajouterArc("E", "C", 1);
-        g.ajouterArc("E", "G", 3);
-        g.ajouterArc("E", "H", 7);
-        g.ajouterArc("G", "B", 2);
-        g.ajouterArc("G", "F", 1);
-        g.ajouterArc("H", "F", 4);
-        g.ajouterArc("H", "G", 2);
-        g.ajouterArc("I", "H", 10);
+        g.ajouterArc(1, 3, 2);  // ajout des arcs
+        g.ajouterArc(1, 4, 1);
+        g.ajouterArc(1, 7, 3);
+        g.ajouterArc(3, 8, 2);
+        g.ajouterArc(4, 1, 3);
+        g.ajouterArc(4, 3, 5);
+        g.ajouterArc(4, 5, 3);
+        g.ajouterArc(5, 3, 1);
+        g.ajouterArc(5, 7, 3);
+        g.ajouterArc(5, 8, 7);
+        g.ajouterArc(7, 1, 2);
+        g.ajouterArc(7, 6, 1);
+        g.ajouterArc(8, 6, 4);
+        g.ajouterArc(8, 7, 2);
+        g.ajouterArc(9, 8, 10);
 
         // test de l'algo de dijkstra
-        assertArrayEquals(new  PCCDijkstra(g, "A", "H").PCC(), new String[]{"A", "C", "H"});
-        assertArrayEquals(new  PCCDijkstra(g, "A", "G").PCC(), new String[]{"A", "C", "H", "G"});
-        assertArrayEquals(new  PCCDijkstra(g, "A", "F").PCC(), new String[]{"A", "C", "H", "G", "F"});
-        assertArrayEquals(new  PCCDijkstra(g, "A", "E").PCC(), new String[]{"A", "D", "E"});
-        assertArrayEquals(new  PCCDijkstra(g, "A", "D").PCC(), new String[]{"A", "D"});
-        assertArrayEquals(new  PCCDijkstra(g, "A", "C").PCC(), new String[]{"A", "C"});
-        assertArrayEquals(new  PCCDijkstra(g, "A", "B").PCC(), new String[]{"A", "D", "B"});
+        assertArrayEquals(PCCDijkstra.PCC(g, 1, 8), new int[]{1, 3, 8});
+        assertArrayEquals(PCCDijkstra.PCC(g, 1, 7), new int[]{1, 3, 8, 7});
+        assertArrayEquals(PCCDijkstra.PCC(g, 1, 6), new int[]{1, 3, 8, 7, 6});
+        assertArrayEquals(PCCDijkstra.PCC(g, 1, 5), new int[]{1, 4, 5});
+        assertArrayEquals(PCCDijkstra.PCC(g, 1, 4), new int[]{1, 4});
+        assertArrayEquals(PCCDijkstra.PCC(g, 1, 3), new int[]{1, 3});
+        assertArrayEquals(PCCDijkstra.PCC(g, 1, 1), new int[]{1, 4, 1});
 
         // test de l'algo de bellman
-        /*assertArrayEquals(new PCCBellman(g, "A", "H").PCC(), new String[]{"A", "C", "H"});
-        assertArrayEquals(new  PCCBellman(g, "A", "G").PCC(), new String[]{"A", "C", "H", "G"});
-        assertArrayEquals(new  PCCBellman(g, "A", "F").PCC(), new String[]{"A", "C", "H", "G", "F"});
-        assertArrayEquals(new  PCCBellman(g, "A", "E").PCC(), new String[]{"A", "D", "E"});
-        assertArrayEquals(new  PCCBellman(g, "A", "D").PCC(), new String[]{"A", "D"});
-        assertArrayEquals(new  PCCBellman(g, "A", "C").PCC(), new String[]{"A", "C"});
-        assertArrayEquals(new  PCCBellman(g, "A", "B").PCC(), new String[]{"A", "D", "B"});*/
+        assertArrayEquals(PCCBellman.PCC(g, 1, 8), new int[]{1, 3, 8});
+        assertArrayEquals(PCCBellman.PCC(g, 1, 7), new int[]{1, 3, 8, 7});
+        assertArrayEquals(PCCBellman.PCC(g, 1, 6), new int[]{1, 3, 8, 7, 6});
+        assertArrayEquals(PCCBellman.PCC(g, 1, 5), new int[]{1, 4, 5});
+        assertArrayEquals(PCCBellman.PCC(g, 1, 4), new int[]{1, 4});
+        assertArrayEquals(PCCBellman.PCC(g, 1, 3), new int[]{1, 3});
+        assertArrayEquals(PCCBellman.PCC(g, 1, 1), new int[]{1, 4, 1});
     }
 
-    void tester3_2(IGraph g){
-        assertEquals(10, g.getNbNoeuds());
+    void tester3_2(IGraphe g){
+        assertEquals(10, g.getNbSommets());
 
-        g.ajouterArc("A","B",8);
-        g.ajouterArc("A","D",3);
-        g.ajouterArc("B","C",4);
-        g.ajouterArc("B","E",5);
-        g.ajouterArc("C","F",1);
-        g.ajouterArc("C","I",5);
-        g.ajouterArc("D","E",2);
-        g.ajouterArc("D","J",1);
-        g.ajouterArc("E","G",3);
-        g.ajouterArc("E","I",2);
-        g.ajouterArc("F","H",5);
-        g.ajouterArc("G","H",4);
-        g.ajouterArc("I","H",2);
-        g.ajouterArc("J","F",6);
-        g.ajouterArc("J","G",6);
+        g.ajouterArc(1,1,8);
+        g.ajouterArc(1,4,3);
+        g.ajouterArc(1,3,4);
+        g.ajouterArc(1,5,5);
+        g.ajouterArc(3,6,1);
+        g.ajouterArc(3,9,5);
+        g.ajouterArc(4,5,2);
+        g.ajouterArc(4,10,1);
+        g.ajouterArc(5,7,3);
+        g.ajouterArc(5,9,2);
+        g.ajouterArc(6,8,5);
+        g.ajouterArc(7,8,4);
+        g.ajouterArc(9,8,2);
+        g.ajouterArc(10,6,6);
+        g.ajouterArc(10,7,6);
 
 
-        assertArrayEquals(new  PCCDijkstra(g, "A", "H").PCC(), new String[]{"A", "D", "E", "I", "H"});
-        assertArrayEquals(new  PCCDijkstra(g, "A", "G").PCC(), new String[]{"A", "D", "E", "G"});
-        assertArrayEquals(new  PCCDijkstra(g, "A", "F").PCC(), new String[]{"A", "D", "J", "F"});
-        assertArrayEquals(new  PCCDijkstra(g, "A", "E").PCC(), new String[]{"A", "D", "E"});
-        assertArrayEquals(new  PCCDijkstra(g, "A", "D").PCC(), new String[]{"A", "D"});
-        assertArrayEquals(new  PCCDijkstra(g, "A", "C").PCC(), new String[]{"A", "B", "C"});
-        assertArrayEquals(new  PCCDijkstra(g, "A", "B").PCC(), new String[]{"A", "B"});
+        assertArrayEquals(PCCDijkstra.PCC(g, 1, 8), new int[]{1, 4, 5, 9, 8});
+        assertArrayEquals(PCCDijkstra.PCC(g, 1, 7), new int[]{1, 4, 5, 7});
+        assertArrayEquals(PCCDijkstra.PCC(g, 1, 6), new int[]{1, 4, 10, 6});
+        assertArrayEquals(PCCDijkstra.PCC(g, 1, 5), new int[]{1, 4, 5});
+        assertArrayEquals(PCCDijkstra.PCC(g, 1, 4), new int[]{1, 4});
+        assertArrayEquals(PCCDijkstra.PCC(g, 1, 3), new int[]{1, 1, 3});
+        assertArrayEquals(PCCDijkstra.PCC(g, 1, 1), new int[]{1, 1});
 
-        /*assertArrayEquals(new  PCCBellman(g, "A", "H").PCC(), new String[]{"A", "D", "E", "I", "H"});
-        assertArrayEquals(new  PCCBellman(g, "A", "G").PCC(), new String[]{"A", "D", "E", "G"});
-        assertArrayEquals(new  PCCBellman(g, "A", "F").PCC(), new String[]{"A", "D", "J", "F"});
-        assertArrayEquals(new  PCCBellman(g, "A", "E").PCC(), new String[]{"A", "D", "E"});
-        assertArrayEquals(new  PCCBellman(g, "A", "D").PCC(), new String[]{"A", "D"});
-        assertArrayEquals(new  PCCBellman(g, "A", "C").PCC(), new String[]{"A", "B", "C"});
-        assertArrayEquals(new  PCCBellman(g, "A", "B").PCC(), new String[]{"A", "B"});*/
+        assertArrayEquals(PCCBellman.PCC(g, 1, 8), new int[]{1, 4, 5, 9, 8});
+        assertArrayEquals(PCCBellman.PCC(g, 1, 7), new int[]{1, 4, 5, 7});
+        assertArrayEquals(PCCBellman.PCC(g, 1, 6), new int[]{1, 4, 10, 6});
+        assertArrayEquals(PCCBellman.PCC(g, 1, 5), new int[]{1, 4, 5});
+        assertArrayEquals(PCCBellman.PCC(g, 1, 4), new int[]{1, 4});
+        assertArrayEquals(PCCBellman.PCC(g, 1, 3), new int[]{1, 1, 3});
+        assertArrayEquals(PCCBellman.PCC(g, 1, 1), new int[]{1, 1});
     }
 
-    void tester3_6(IGraph g){
-        assertEquals(7, g.getNbNoeuds());
+    void tester3_6(IGraphe g){
+        assertEquals(7, g.getNbSommets());
 
-        g.ajouterArc("A","B",7);
-        g.ajouterArc("A","C",1);
-        g.ajouterArc("B","D",4);
-        g.ajouterArc("B","E",2);
-        g.ajouterArc("B","F",-3);
-        g.ajouterArc("C","B",5);
-        g.ajouterArc("C","E",2);
-        g.ajouterArc("C","F",7);
-        g.ajouterArc("D","G",4);
-        g.ajouterArc("E","G",10);
-        g.ajouterArc("F","D",5);
-        g.ajouterArc("F","E",3);
+        g.ajouterArc(1,1,7);
+        g.ajouterArc(1,3,1);
+        g.ajouterArc(1,4,4);
+        g.ajouterArc(1,5,2);
+        g.ajouterArc(1,6,-3);
+        g.ajouterArc(3,1,5);
+        g.ajouterArc(3,5,2);
+        g.ajouterArc(3,6,7);
+        g.ajouterArc(4,7,4);
+        g.ajouterArc(5,7,10);
+        g.ajouterArc(6,4,5);
+        g.ajouterArc(6,5,3);
 
         // nous nous assurons qu'une exception est levée
-        /*
+
         boolean b = false;
         try {
-            new PCCDijkstra(g, "A", "B").PCC();
+            PCCDijkstra.PCC(g, 1, 1);
         }catch (ArcNégatifEx e){
             assertTrue(true);
             b = true;
         }finally {
             assertTrue(b);
-        }*/
+        }
+
+        b = false;
+        try {
+            PCCBellman.PCC(g, 1, 1);
+        }catch (ArcNégatifEx e){
+            assertTrue(true);
+            b = true;
+        }finally {
+            assertTrue(b);
+        }
 
     }
 

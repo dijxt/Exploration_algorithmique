@@ -5,72 +5,24 @@ import graphes.ArcNégatifEx;
 import java.util.*;
 
 public class PCCDijkstra {
-
-    private final IGraph g;  // le graphe
-    private final String source;  // le sommet source
-    private final String cible;  // le sommet cible
-    private ArrayList<String> noeudsVisites;  // les noeuds deja parcourus par l'algorithme
-    private int[] distanceSommets;  // la distance totale de chaque sommet de la source
-    private String[] dernierPredecesseur;  // le prédécesseur le plus court de chaque sommet
-
+    private static final int INFINI = Integer.MAX_VALUE;
 
     /**
-     * Indique si un graphe peut être soumis à l'algorithme de dijkstra
-     * @param g le graphe
-     * @return true si le graphe est correct, false sinon
-     */
-    public static boolean estOkGraphe(IGraph g){
-        for (String s: g.getLabels()){
-            for (String sc: g.getSuccesseurs(s)){
-                if (g.getValeur(s, sc) < 0){
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Constructeur de la classe PCCDijkstra.
+     * Retourne le plus court chemin entre deux sommets d'un graphe
      * @param g un graphe
      * @param source un sommet source
      * @param cible un sommet cible
      */
-    public PCCDijkstra(IGraph g, String source, String cible){
+    public static int[] PCC(IGraphe g, int source, int cible) {
         if (!estOkGraphe(g)) {
             throw new ArcNégatifEx();
         }
-        this.g = g;
-        this.source = source;
-        this.cible = cible;
-        this.noeudsVisites = new ArrayList<>();
-        this.distanceSommets = new int[g.getNbNoeuds()];
-        this.dernierPredecesseur = new String[g.getNbNoeuds()];
-        // initialisation du noeud source
-        noeudsVisites.add(source);
-        distanceSommets[0] = 0;
-        dernierPredecesseur[0] = null;
 
-    for(int i = 1; i < g.getNbNoeuds(); ++i) {
-    if (Arrays.asList(g.getSuccesseurs(source)).contains(g.getLabels()[i])) {
-    distanceSommets[i] = g.getValeur(source, g.getLabels()[i]);
-    dernierPredecesseur[i] = source;
-    } else {
-    distanceSommets[i] = Integer.MAX_VALUE;
-    dernierPredecesseur[i] = null;
-    }
-    }
-    }
-
-    /**
-     * Renvoie le plus court chemin entre deux sommets d'un graphe
-     *
-     * @return le plus court chemin
-     */
-    public String[] PCC(){
-        ArrayList<String> chemin = new ArrayList<>();
+        if (source == cible) {
+            return new int[]{source};
+        }
+        ArrayList<Integer> chemin = new ArrayList<>();
         chemin.add(cible);
-
         ArrayList<Integer> noeudsVisites = new ArrayList<>();
         int[] distanceSommets = new int[g.getNbSommets()];
         int[] dernierPredecesseur = new int[g.getNbSommets()];
@@ -115,7 +67,6 @@ public class PCCDijkstra {
 
     /**
      * Indique si un graphe peut être soumis à l'algorithme de dijkstra
-     *
      * @param g le graphe
      * @return true si le graphe est correct, false sinon
      */

@@ -6,21 +6,21 @@ import java.util.*;
 
 public class PCCBellman {
 
-    public static int PCC(IGraph g, String source, String cible){
-        Map<String, Integer> distances = new HashMap<>();
-        Map<String, String> predecesseurs = new HashMap<>();
+    public static int PCC(IGraphe g, int source, int cible){
+        Map<Integer, Integer> distances = new HashMap<>();
+        Map<Integer, Integer> predecesseurs = new HashMap<>();
 
-        for (String tmpIterNext : g) {
-            distances.put(tmpIterNext, Integer.MAX_VALUE);
-            predecesseurs.put(tmpIterNext, null);
+        for (int i = 0 ; i < g.getNbSommets() ; i++) {
+            distances.put(i, Integer.MAX_VALUE);
+            predecesseurs.put(i, null);
         }
 
         distances.put(source, 0);
-        for (String label1 : distances.keySet())
-            for (String label2 : distances.keySet())
+        for (int label1 : distances.keySet())
+            for (int label2 : distances.keySet())
                 if (label1 != source || label2 != source || label2 != label1)
-                    if (distances.get(label2) > distances.get(label1) + g.getValeur(label1, label2)){
-                        distances.put(label2, distances.get(label1) + g.getValeur(label1, label2));
+                    if (distances.get(label2) > distances.get(label1) + g.getValuation(label1, label2)){
+                        distances.put(label2, distances.get(label1) + g.getValuation(label1, label2));
                         predecesseurs.put(label2, label1);
                     }
 
