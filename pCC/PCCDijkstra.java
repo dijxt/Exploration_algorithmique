@@ -1,6 +1,7 @@
 package pCC;
 
 import graphes.ArcNégatifEx;
+import graphes.NoPathEx;
 
 import java.util.*;
 
@@ -31,9 +32,13 @@ public class PCCDijkstra {
         int[] dernierPredecesseur = new int[g.getNbSommets()];
 
         for (int i = 1; i <= g.getNbSommets(); ++i) {
-            if (Arrays.asList(g.getSuccesseurs(source)).contains(i)) {
+            int finalI = i;
+            if (Arrays.stream(g.getSuccesseurs(source)).anyMatch(j -> j == finalI)) {
                 distanceSommets[i - 1] = g.getValuation(source, i);
                 dernierPredecesseur[i - 1] = source;
+            } else if (i == source) {
+                distanceSommets[i - 1] = 0;
+                dernierPredecesseur[i - 1] = NOEUD_VIDE;
             } else {
                 distanceSommets[i - 1] = INFINI;
                 dernierPredecesseur[i - 1] = NOEUD_VIDE;
@@ -42,7 +47,7 @@ public class PCCDijkstra {
         while (!noeudsVisites.contains(cible)) {
             int dernierNoeud = noeudsVisites.get(noeudsVisites.size() - 1);
             for (int s : g.getSuccesseurs(dernierNoeud)) {
-                if (g.getValuation(dernierNoeud, s) + distanceSommets[dernierNoeud] < distanceSommets[s - 1]) {
+                if (g.getValuation(dernierNoeud, s) + distanceSommets[dernierNoeud - 1] < distanceSommets[s - 1]) {
                     distanceSommets[s - 1] = g.getValuation(dernierNoeud, s) + distanceSommets[dernierNoeud - 1];
                     dernierPredecesseur[s - 1] = dernierNoeud;
                 }
@@ -55,7 +60,11 @@ public class PCCDijkstra {
                     prochainNoeud = i + 1;
                 }
             }
-            noeudsVisites.add(prochainNoeud);
+            if (prochainNoeud == NOEUD_VIDE){
+                throw new NoPathEx();
+            }else {
+                noeudsVisites.add(prochainNoeud);
+            }
         }
         int noeudChemin = cible;
         while (!(noeudChemin == source)) {
@@ -66,7 +75,6 @@ public class PCCDijkstra {
         System.out.println(chemin);
         System.out.println(distanceSommets[cible - 1]);
         return new PCC(ALGORITHME, distanceSommets[cible - 1], chemin.stream().mapToInt(Integer::intValue).toArray());
-        //return chemin.stream().mapToInt(Integer::intValue).toArray();
     }
 
     /**
