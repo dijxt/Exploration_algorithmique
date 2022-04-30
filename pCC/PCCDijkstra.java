@@ -6,6 +6,8 @@ import java.util.*;
 
 public class PCCDijkstra {
     private static final int INFINI = Integer.MAX_VALUE;
+    private static final String ALGORITHME = "Dijkstra";
+    private static final int NOEUD_VIDE = 0;
 
     /**
      * Retourne le plus court chemin entre deux sommets d'un graphe
@@ -13,17 +15,18 @@ public class PCCDijkstra {
      * @param source un sommet source
      * @param cible un sommet cible
      */
-    public static int[] PCC(IGraphe g, int source, int cible) {
+    public static PCC PCC(IGraphe g, int source, int cible) throws ArcNégatifEx{
         if (!estOkGraphe(g)) {
             throw new ArcNégatifEx();
         }
 
         if (source == cible) {
-            return new int[]{source};
+            return new PCC(ALGORITHME, 0, new int[]{cible});
         }
         ArrayList<Integer> chemin = new ArrayList<>();
         chemin.add(cible);
         ArrayList<Integer> noeudsVisites = new ArrayList<>();
+        noeudsVisites.add(source);
         int[] distanceSommets = new int[g.getNbSommets()];
         int[] dernierPredecesseur = new int[g.getNbSommets()];
 
@@ -33,7 +36,7 @@ public class PCCDijkstra {
                 dernierPredecesseur[i - 1] = source;
             } else {
                 distanceSommets[i - 1] = INFINI;
-                dernierPredecesseur[i - 1] = (Integer) null;
+                dernierPredecesseur[i - 1] = NOEUD_VIDE;
             }
         }
         while (!noeudsVisites.contains(cible)) {
@@ -44,7 +47,7 @@ public class PCCDijkstra {
                     dernierPredecesseur[s - 1] = dernierNoeud;
                 }
             }
-            int prochainNoeud = (Integer) null;
+            int prochainNoeud = NOEUD_VIDE;
             int valeurArcProchainNoeud = INFINI;
             for (int i = 0; i < distanceSommets.length; ++i) {
                 if (distanceSommets[i] < valeurArcProchainNoeud && !noeudsVisites.contains(i + 1)) {
@@ -62,7 +65,8 @@ public class PCCDijkstra {
         Collections.reverse(chemin);
         System.out.println(chemin);
         System.out.println(distanceSommets[cible - 1]);
-        return chemin.stream().mapToInt(Integer::intValue).toArray();
+        return new PCC(ALGORITHME, distanceSommets[cible - 1], chemin.stream().mapToInt(Integer::intValue).toArray());
+        //return chemin.stream().mapToInt(Integer::intValue).toArray();
     }
 
     /**

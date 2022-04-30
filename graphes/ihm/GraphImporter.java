@@ -15,6 +15,7 @@ public class GraphImporter {
         System.out.print(g);
         System.out.println("debut fin : "+ df.getSource() + " ==> "+ df.getDestination());
         verifierGraphes();
+        // tester PCC
     }
 
     public static void verifierGraphes() throws FileNotFoundException {
