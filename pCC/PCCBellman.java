@@ -1,79 +1,71 @@
 package pCC;
 
 import graphes.CircuitEx;
+import graphes.NoPathEx;
 
 import java.util.*;
 
 public class PCCBellman {
 
-    public static int[] PCC(IGraphe g, int source, int cible) {
+    public static PCC PCC(IGraphe g, int source, int cible) {
         int[] distances = new int[g.getNbSommets()];
         int[] predecesseurs = new int[g.getNbSommets()];
-        List<Integer> sommetsParRang = triTopologique(g);
-
-        //System.out.println(sommetsParRang);
+        List<ArrayList<Integer>> sommetsParRang = triTopologique(g);
 
         Arrays.fill(distances, Integer.MAX_VALUE);
-        Arrays.fill(predecesseurs, 0);
+        Arrays.fill(predecesseurs, -1);
 
-        distances[sommetsParRang.get(0)] = 0;
+        for (int sommet : sommetsParRang.get(0))
+            distances[sommet] = 0;
 
-        for (Iterator<Integer> it = sommetsParRang.iterator(); it.hasNext(); ) {
-            int i = it.next();
-            for (int j : g.getSuccesseurs(i+1)) {
-                j = j-1;
-                if (distances[j] > distances[i] + g.getValuation(i, j)) {
-                    distances[j] = distances[i] + g.getValuation(i, j);
-                    predecesseurs[j] = i;
+        for (List<Integer> listDeSommets : sommetsParRang)
+            for (int sommet : listDeSommets)
+                for (int successeur : g.getSuccesseurs(sommet + 1)) {
+                    successeur--;
+                    if (distances[successeur] > distances[sommet] + g.getValuation(sommet + 1, successeur + 1)) {
+                        distances[successeur] = distances[sommet] + g.getValuation(sommet + 1, successeur + 1);
+                        predecesseurs[successeur] = sommet;
+                    }
                 }
-            }
-        }
 
         List<Integer> pcc = new ArrayList<>();
         pcc.add(cible);
-        for (int i = 0 ; (pcc.get(pcc.size() - 1) != source || pcc.get(pcc.size() - 1) != 0) && i < g.getNbSommets() ; i++) {
-            pcc.add(predecesseurs[pcc.get(pcc.size() - 1)]);
-        }
+        for (int i = 0 ; pcc.get(pcc.size() - 1) != source && i < g.getNbSommets() ; i++)
+            pcc.add(predecesseurs[pcc.get(pcc.size() - 1) - 1]+1);
 
         Collections.reverse(pcc);
-        for (int i : predecesseurs)
-            System.out.print(Integer.toString(i) + " ");
-        System.out.println();
-        for (int i : distances)
-            System.out.print(Integer.toString(i) + " ");
-        System.out.println();
-        System.out.println(pcc);
-        return pcc.stream().mapToInt(Integer::intValue).toArray();
+        return new PCC("Bellman", distances[cible - 1] - distances[source - 1], pcc.stream().mapToInt(Integer::intValue).toArray());
     }
 
 
-    private static List<Integer> triTopologique(IGraphe g) {
+    private static List<ArrayList<Integer>> triTopologique(IGraphe g) {
         Map<Integer, List<Integer>> predecesseurs = new HashMap<>();
-        for (int i = 0; i < g.getNbSommets(); i++) {
-            predecesseurs.put(i, new ArrayList<Integer>());
-            for (int j : g.getSuccesseurs(i + 1))
-                predecesseurs.get(i).add(j);
-        }
-        for (int i : predecesseurs.keySet())
-            System.out.println(Integer.toString(i) + " : " + predecesseurs.get(i));
+        for (int i = 0; i < g.getNbSommets(); i++)
+            predecesseurs.put(i, new ArrayList<>());
 
-        List<Integer> sommetsParRangs = new ArrayList<>();
+        for (int i = 0; i < g.getNbSommets(); i++)
+            for (int j : g.getSuccesseurs(i + 1))
+                predecesseurs.get(j - 1).add(i);
+
+        List<ArrayList<Integer>> rangs = new ArrayList<ArrayList<Integer>>();
         List<Integer> sommetsOut = new ArrayList<>();
-        sommetsOut.add(2);
-        sommetsOut.add(8);
         List<Integer> sommetsAEnlever = new ArrayList<>();
         for (int i = 0; i < g.getNbSommets(); i++){
+            if (sommetsOut.size() == g.getNbSommets())
+                return rangs;
+            rangs.add(new ArrayList<>());
             for (int key : predecesseurs.keySet()) {
-                if (sommetsOut.containsAll(predecesseurs.get(key)) && !sommetsOut.contains(key+1)){
-                    sommetsParRangs.add(key);
-                    sommetsAEnlever.add(key+1);
+                if ((predecesseurs.get(key).isEmpty() || sommetsOut.containsAll(predecesseurs.get(key))) && !sommetsOut.contains(key)){
+                    rangs.get(i).add(key);
+                    sommetsAEnlever.add(key);
                 }
             }
             for(int sommet : sommetsAEnlever)
                 sommetsOut.add(sommet);
             sommetsAEnlever.clear();
-            System.out.println(sommetsOut);
         }
-        return sommetsParRangs;
+        return rangs;
     }
+
+
 }

@@ -144,7 +144,7 @@ public class PCCTest {
         assertEquals(PCCDijkstra.PCC(g, 1, 3).getLongeurChemin(), 12);
         assertEquals(PCCDijkstra.PCC(g, 1, 2).getLongeurChemin(), 8);
 
-        /*assertArrayEquals(PCCBellman.PCC(g, 1, 8).getChemin(), new int[]{1, 4, 5, 9, 8});
+        assertArrayEquals(PCCBellman.PCC(g, 1, 8).getChemin(), new int[]{1, 4, 5, 9, 8});
         assertArrayEquals(PCCBellman.PCC(g, 1, 7).getChemin(), new int[]{1, 4, 5, 7});
         assertArrayEquals(PCCBellman.PCC(g, 1, 6).getChemin(), new int[]{1, 4, 10, 6});
         assertArrayEquals(PCCBellman.PCC(g, 1, 5).getChemin(), new int[]{1, 4, 5});
@@ -158,7 +158,7 @@ public class PCCTest {
         assertEquals(PCCBellman.PCC(g, 1, 5).getLongeurChemin(), 5);
         assertEquals(PCCBellman.PCC(g, 1, 4).getLongeurChemin(), 3);
         assertEquals(PCCBellman.PCC(g, 1, 3).getLongeurChemin(), 12);
-        assertEquals(PCCBellman.PCC(g, 1, 2).getLongeurChemin(), 8);*/
+        assertEquals(PCCBellman.PCC(g, 1, 2).getLongeurChemin(), 8);
     }
 
     void tester3_6(IGraphe g){
@@ -188,16 +188,6 @@ public class PCCTest {
         }finally {
             assertTrue(b);
         }
-/*
-        b = false;
-        try {
-            PCCBellman.PCC(g, 1, 1);
-        }catch (ArcNégatifEx e){
-            assertTrue(true);
-            b = true;
-        }finally {
-            assertTrue(b);
-        }*/
 
     }
 
