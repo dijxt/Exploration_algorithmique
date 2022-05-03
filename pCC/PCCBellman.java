@@ -1,13 +1,19 @@
 package pCC;
 
-import graphes.CircuitEx;
 import graphes.NoPathEx;
+import graphes.CircuitEx;
 
 import java.util.*;
 
 public class PCCBellman {
 
     public static PCC PCC(IGraphe g, int source, int cible) {
+
+        if (source < 1 || cible > g.getNbSommets())
+            throw new NoPathEx();
+        if (detectionDeCircuit(g, source))
+            throw new CircuitEx();
+
         int[] distances = new int[g.getNbSommets()];
         int[] predecesseurs = new int[g.getNbSommets()];
         List<ArrayList<Integer>> sommetsParRang = triTopologique(g);
@@ -15,8 +21,7 @@ public class PCCBellman {
         Arrays.fill(distances, Integer.MAX_VALUE);
         Arrays.fill(predecesseurs, -1);
 
-        for (int sommet : sommetsParRang.get(0))
-            distances[sommet] = 0;
+        distances[sommetsParRang.get(0).get(0)] = 0;
 
         for (List<Integer> listDeSommets : sommetsParRang)
             for (int sommet : listDeSommets)
@@ -30,8 +35,11 @@ public class PCCBellman {
 
         List<Integer> pcc = new ArrayList<>();
         pcc.add(cible);
-        for (int i = 0 ; pcc.get(pcc.size() - 1) != source && i < g.getNbSommets() ; i++)
-            pcc.add(predecesseurs[pcc.get(pcc.size() - 1) - 1]+1);
+        for (int i = 0 ; pcc.get(pcc.size() - 1) != source ; i++) {
+            if (predecesseurs[pcc.get(pcc.size() - 1) - 1] + 1 <= 0)
+                throw new NoPathEx();
+            pcc.add(predecesseurs[pcc.get(pcc.size() - 1) - 1] + 1);
+        }
 
         Collections.reverse(pcc);
         return new PCC("Bellman", distances[cible - 1] - distances[source - 1], pcc.stream().mapToInt(Integer::intValue).toArray());
@@ -47,7 +55,7 @@ public class PCCBellman {
             for (int j : g.getSuccesseurs(i + 1))
                 predecesseurs.get(j - 1).add(i);
 
-        List<ArrayList<Integer>> rangs = new ArrayList<ArrayList<Integer>>();
+        List<ArrayList<Integer>> rangs = new ArrayList<>();
         List<Integer> sommetsOut = new ArrayList<>();
         List<Integer> sommetsAEnlever = new ArrayList<>();
         for (int i = 0; i < g.getNbSommets(); i++){
@@ -60,12 +68,32 @@ public class PCCBellman {
                     sommetsAEnlever.add(key);
                 }
             }
-            for(int sommet : sommetsAEnlever)
-                sommetsOut.add(sommet);
+
+            sommetsOut.addAll(sommetsAEnlever);
             sommetsAEnlever.clear();
         }
         return rangs;
     }
 
-
+    private static boolean detectionDeCircuit(IGraphe g, int source){
+        List<Integer> sommetsVisites = new ArrayList<>();
+        List<Integer> derniersSommetsAjoutes = new ArrayList<>();
+        derniersSommetsAjoutes.add(source);
+        List<Integer> sommetsAAjouter = new ArrayList<>();
+        for (int nbIteration = 0 ; nbIteration < g.getNbSommets() ; nbIteration++) {
+            for (int sommet : derniersSommetsAjoutes)
+                for (int successeurs : g.getSuccesseurs(sommet))
+                    sommetsAAjouter.add(successeurs);
+            if (sommetsAAjouter.isEmpty())
+                return false;
+            System.out.println(sommetsVisites);
+            System.out.println(derniersSommetsAjoutes);
+            System.out.println(sommetsAAjouter);
+            sommetsVisites.addAll(derniersSommetsAjoutes);
+            derniersSommetsAjoutes.clear();
+            derniersSommetsAjoutes.addAll(sommetsAAjouter);
+            sommetsAAjouter.clear();
+        }
+        return true;
+    }
 }
