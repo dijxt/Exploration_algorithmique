@@ -35,7 +35,7 @@ public class PCCBellman {
 
         List<Integer> pcc = new ArrayList<>();
         pcc.add(cible);
-        for (int i = 0 ; pcc.get(pcc.size() - 1) != source ; i++) {
+        while (pcc.get(pcc.size() - 1) != source) {
             if (predecesseurs[pcc.get(pcc.size() - 1) - 1] + 1 <= 0)
                 throw new NoPathEx();
             pcc.add(predecesseurs[pcc.get(pcc.size() - 1) - 1] + 1);
@@ -76,17 +76,18 @@ public class PCCBellman {
     }
 
     private static boolean detectionDeCircuit(IGraphe g, int source){
-        List<Integer> sommetsVisites = new ArrayList<>();
         List<Integer> derniersSommetsAjoutes = new ArrayList<>();
         derniersSommetsAjoutes.add(source);
         List<Integer> sommetsAAjouter = new ArrayList<>();
         for (int nbIteration = 0 ; nbIteration < g.getNbSommets() ; nbIteration++) {
             for (int sommet : derniersSommetsAjoutes)
-                for (int successeurs : g.getSuccesseurs(sommet))
+                for (int successeurs : g.getSuccesseurs(sommet)) {
+                    if (sommet == successeurs || g.aArc(successeurs, sommet))
+                        return true;
                     sommetsAAjouter.add(successeurs);
+                }
             if (sommetsAAjouter.isEmpty())
                 return false;
-            sommetsVisites.addAll(derniersSommetsAjoutes);
             derniersSommetsAjoutes.clear();
             derniersSommetsAjoutes.addAll(sommetsAAjouter);
             sommetsAAjouter.clear();
