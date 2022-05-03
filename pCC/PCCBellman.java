@@ -86,9 +86,6 @@ public class PCCBellman {
                     sommetsAAjouter.add(successeurs);
             if (sommetsAAjouter.isEmpty())
                 return false;
-            System.out.println(sommetsVisites);
-            System.out.println(derniersSommetsAjoutes);
-            System.out.println(sommetsAAjouter);
             sommetsVisites.addAll(derniersSommetsAjoutes);
             derniersSommetsAjoutes.clear();
             derniersSommetsAjoutes.addAll(sommetsAAjouter);
